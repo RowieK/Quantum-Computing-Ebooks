@@ -153,3 +153,91 @@ def compute_00_Y(ax_lim, cmap, title,  fig_name):
 title = '$Nitrogen\ with\ 3p\ electrons\ (L=0,\ M=0)$'
 fig_name ='Nitrogen_3p_L0_M0.png'
 compute_00_Y(0.01, 'autumn', title, fig_name)
+
+#------------------------------------------------------------
+def compute_3d_Y(ax_lim, cmap, title, fig_name):
+    fig = plt.figure(figsize=plt.figaspect(1.))
+    (theta, phi, xyz) = setup_grid()
+    ax = fig.add_subplot(projection='3d')
+    (Y20a, Y21a, Y2m1a, Y22a, Y2m2a) = (
+        comb_Y(2, 0, theta, phi),
+        comb_Y(2, 1, theta, phi),
+        comb_Y(2, -1, theta, phi),
+        comb_Y(2, 2, theta, phi),
+        comb_Y(2, -2, theta, phi)
+    )
+    # Compute a sample linear combination of spherical harmonics
+    Y = 0.2 * Y20a + 0.2 * Y21a + 0.2 * Y2m1a + 0.2 * Y22a + 0.2 * Y2m2a
+    Yx, Yy, Yz = np.abs(Y) * xyz
+    colour_plot(ax, Y, Yx, Yy, Yz, cmap)
+    draw_axes(ax, ax_lim, title)
+    plt.savefig(fig_name)
+    plt.show()
+    return
+
+# Update the title and filename
+title = '$Copper\ with\ 3d\ electrons\ (L=2,\ M=all)$'
+fig_name = 'Copper_3d_L2_M_all.png'
+
+compute_3d_Y(0.5, 'autumn', title, fig_name)
+
+#------------------------------------------------------------
+def compute_gold_wormhole(ax_lim, cmap, title, fig_name):
+    fig = plt.figure(figsize=plt.figaspect(1.))
+    (theta, phi, xyz) = setup_grid()
+    ax = fig.add_subplot(projection='3d')
+
+    # Create spherical harmonics for Gold's 5d orbitals
+    Y20 = comb_Y(2, 0, theta, phi)
+    Y21 = comb_Y(2, 1, theta, phi + np.pi / 6)
+    Y2m1 = comb_Y(2, -1, theta, phi + np.pi / 6)
+    Y22 = comb_Y(2, 2, theta, phi + np.pi / 3)
+    Y2m2 = comb_Y(2, -2, theta, phi + np.pi / 3)
+
+    # Weighted sum with phase shifts for a unique Gold visualization
+    Y = 0.4 * Y20 + 0.3 * Y21 - 0.2 * Y2m1 + 0.1 * Y22 - 0.1 * Y2m2
+    Yx, Yy, Yz = np.abs(Y) * xyz
+
+    colour_plot(ax, Y, Yx, Yy, Yz, cmap)
+    draw_axes(ax, ax_lim, title)
+    plt.savefig(fig_name)
+    plt.show()
+    return
+
+# Update the title and filename
+title = '$Gold\ with\ customized\ 5d\ electrons\ (wormhole-like)$'
+fig_name = 'Gold_5d_wormhole.png'
+
+# Run the visualization
+compute_gold_wormhole(0.5, 'plasma', title, fig_name)
+
+#------------------------------------------------------------
+def compute_gold_classic(ax_lim, cmap, title, fig_name):
+    fig = plt.figure(figsize=plt.figaspect(1.))
+    (theta, phi, xyz) = setup_grid()
+    ax = fig.add_subplot(projection='3d')
+
+    # Create spherical harmonics for Gold's 5d orbitals
+    Y20 = comb_Y(2, 0, theta, phi)
+    Y21 = comb_Y(2, 1, theta, phi)
+    Y2m1 = comb_Y(2, -1, theta, phi)
+    Y22 = comb_Y(2, 2, theta, phi)
+    Y2m2 = comb_Y(2, -2, theta, phi)
+
+    # Symmetric combination of harmonics
+    Y = Y20 + Y21 + Y2m1 + Y22 + Y2m2
+    Yx, Yy, Yz = np.abs(Y) * xyz
+
+    # Plot the orbital
+    colour_plot(ax, Y, Yx, Yy, Yz, cmap)
+    draw_axes(ax, ax_lim, title)
+    plt.savefig(fig_name)
+    plt.show()
+    return
+
+# Set the title and filename
+title = '$Gold\ with\ 5d\ electrons\ (classic\ symmetric\ visualization)$'
+fig_name = 'Gold_5d_classic.png'
+
+# Run the visualization
+compute_gold_classic(0.5, 'inferno', title, fig_name)
