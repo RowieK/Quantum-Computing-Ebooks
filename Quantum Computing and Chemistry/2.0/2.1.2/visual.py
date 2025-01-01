@@ -20,14 +20,19 @@ def comp_CG(T, k, display = None):
     *T[k][4:10], ') = ', CGk.doit())
     return CGk
 
+CG0 = comp_CG(T00, 0, display=True)
+CG1 = comp_CG(T00, 1, display=True)
+CG2 = comp_CG(T00, 2, display=True)
+CG3 = comp_CG(T00, 3, display=True)
+CG4 = comp_CG(T00, 4, display=True)
+CG5 = comp_CG(T00, 5, display=True)
+
 for k in range(0, len(T00)):
     s = 'CG' + str(k) +' = comp_CG(T00, ' + str(k) + ')'
     exec(s)
 s00 = ["CG0: {}, CG1: {}, CG2: {}, CG3: {}, CG4: {}, CG5: {}".
-    format(CG0.doit(), CG1.doit(), CG2.doit(), CG3.doit(), CG4.doit(), CG5.doit())]
+       format(CG0.doit(), CG1.doit(), CG2.doit(), CG3.doit(), CG4.doit(), CG5.doit())]
 print(s00)
-
-CG0 = comp_CG(T00, 0, display=True)
 
 def Y_phase(theta, phi):
     Y10a = comb_Y(1, 0, theta, phi)
